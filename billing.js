@@ -179,18 +179,13 @@ window.searchProduct = function(){
 // Clear Bill
 window.clearBill = function(){
 
-    if(confirm("Clear Bill?")){
+    bill = [];
 
-        bill = [];
+    grandTotal = 0;
 
-        grandTotal = 0;
-
-        displayBill();
-
-    }
+    displayBill();
 
 }
-
 
 
 window.printBill = async function () {
@@ -372,6 +367,7 @@ function bluetoothPrint() {
 
     Android.printBill(printdata);
 }
+
 async function barcodeScanned(barcode) {
 
     const index = products.findIndex(
