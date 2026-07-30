@@ -344,45 +344,51 @@ async function getInvoiceNumber() {
     return `INV-${year}${month}-${invoiceNo.toString().padStart(4,"0")}`;
 
 }
-function bluetoothPrint() {
-
-    let printdata = "";
-
-    printdata += "Invoice : " + currentInvoice + "\n";
-    printdata += "Date : " + new Date().toLocaleString() + "\n";
-    printdata += "--------------------------------\n";
-
-    bill.forEach(item => {
-
-        let name = item.name.substring(0,16).padEnd(16);
-        let qty = String(item.qty).padStart(3);
-        let amt = String(item.total).padStart(8);
-
-        printdata += name + qty + amt + "\n";
-
-    });
-
-    printdata += "--------------------------------\n";
-    printdata += "Grand Total : " + grandTotal + "\n";
-
-    Android.printBill(printdata);
+function padRight(text, length) {
+    text = text.toString();
+    if (text.length > length)
+        return text.substring(0, length);
+    return text + " ".repeat(length - text.length);
 }
 
-async function barcodeScanned(barcode) {
+function padLeft(text, length) {
+    text = text.toString();
+    return " ".repeat(Math.max(0, length - text.length)) + text;
+}
 
-    const index = products.findIndex(
-        p => String(p.barcode) === String(barcode)
-    );
+function bluetoothPrint() {
 
-    if (index >= 0) {
+    let billData = "";
 
-        addToBill(index);
+    billData += "Invoice : " + currentInvoice + "\n";
+    billData += "Date : " + new Date().toLocaleString() + "\n";
+    billData += "--------------------------------\n";
 
-    } else {
+    billData += padRight("Item",16)
+             + padLeft("Qty",4)
+             + padLeft("Amt",10)
+             + "\n";
 
-        alert("Product Not Found");
+    billData += "--------------------------------\n";
 
-    }
+    bill.forEach(item => {
+        let name = item.name;
+
+if (name.length > 14)
+    name = name.substring(0, 14);
+
+
+        billData += padRight(item.name,14)
+                 + padLeft(item.qty,3)
+                 + padLeft(item.total,6)
+                 + "\n";
+    });
+
+    billData += "------------------------------\n";
+billData += "TOTAL : " + grandTotal + "\n";
+billData += "------------------------------\n";
+
+    Android.printBill(billData);
 }
 // Barcode Scanner (USB Wireless Keyboard Mode)
 
