@@ -242,20 +242,12 @@ let rows = "";
 bill.forEach(item => {
 
     rows += `
-    <tr>
-        <td style="width:70%;padding:6px 0;">
-            ${item.name}
-        </td>
-
-        <td style="width:10%;text-align:center;">
-            ${item.qty}
-        </td>
-
-        <td style="width:20%;text-align:right;">
-            ₹${item.total}
-        </td>
-    </tr>
-    `;
+<tr>
+    <td>${item.name}</td>
+    <td style="text-align:center;">${item.qty}</td>
+    <td style="text-align:right;">₹${item.total}</td>
+</tr>
+`;
 
 });
 
