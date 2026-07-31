@@ -371,13 +371,13 @@ bill.forEach(item => {
 
     let name = item.name;
 
-    if (name.length > 16)
-        name = name.substring(0,16);
+if (name.length > 16)
+    name = name.substring(0,16);
 
-    billData += centerText(name,16)
-             + padLeft(item.qty,4)
-             + padLeft(item.total,10)
-             + "\n";
+
+billData += name + "\n";
+billData += "      " + item.qty + "        " + item.total + "\n";
+billData += "\n";
 });
 
 billData += "--------------------------------\n";
