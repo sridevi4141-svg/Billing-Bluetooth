@@ -336,22 +336,14 @@ async function getInvoiceNumber() {
     return `INV-${year}${month}-${invoiceNo.toString().padStart(4,"0")}`;
 
 }
-function padRight(text, length) {
-    text = text.toString();
-    if (text.length > length)
-        return text.substring(0, length);
-    return text + " ".repeat(length - text.length);
+function padRight(text, width) {
+    text = String(text);
+    return text.length >= width ? text.substring(0, width) : text.padEnd(width, " ");
 }
 
-function padLeft(text, length) {
-    text = text.toString();
-    return " ".repeat(Math.max(0, length - text.length)) + text;
-}
-function centerText(text, width = 32) {
-    if (text.length >= width) return text;
-
-    let padding = Math.floor((width - text.length) / 2);
-    return " ".repeat(padding) + text;
+function padLeft(text, width) {
+    text = String(text);
+    return text.length >= width ? text.substring(0, width) : text.padStart(width, " ");
 }
 
 function bluetoothPrint() {
@@ -362,25 +354,32 @@ function bluetoothPrint() {
     billData += "Date : " + new Date().toLocaleString() + "\n";
     billData += "--------------------------------\n";
 
+    billData += padRight("ITEM",16);
+    billData += padLeft("QTY",5);
+    billData += padLeft("AMT",11);
+    billData += "\n";
+
+    billData += "--------------------------------\n";
+
     bill.forEach(item => {
 
-        let line = `${item.name}   ${item.qty}   ${item.total}`;
+        billData += padRight(item.name,16);
+        billData += padLeft(item.qty,5);
+        billData += padLeft(item.total,11);
+        billData += "\n";
 
-        // 32 characters లోపల ఉండేలా
-        if (line.length > 32) {
-            line = line.substring(0, 32);
-        }
-
-        billData += centerText(line) + "\n";
-        billData += "--------------------------------\n";
     });
 
-    billData += centerText("TOTAL : " + grandTotal) + "\n";
+    billData += "--------------------------------\n";
+
+    billData += padRight("TOTAL",21);
+    billData += padLeft(grandTotal,11);
+    billData += "\n";
+
     billData += "--------------------------------\n";
 
     Android.printBill(billData);
 }
-
 let barcodeInput = document.getElementById("barcodeInput");
 
 barcodeInput.addEventListener("keydown", function(e){
