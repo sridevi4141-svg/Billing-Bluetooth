@@ -367,22 +367,27 @@ function bluetoothPrint() {
     billData += "Date : " + new Date().toLocaleString() + "\n";
     billData += "--------------------------------\n";
 
-bill.forEach(item => {
+    bill.forEach(item => {
 
-    let name = item.name;
+        let name = item.name;
 
-if (name.length > 16)
-    name = name.substring(0,16);
+        if (name.length > 32)
+            name = name.substring(0,32);
 
+        // Product Name
+        billData += name + "\n";
 
-billData += name + "\n";
-billData += "      " + item.qty + "        " + item.total + "\n";
-billData += "\n";
-});
+        // Qty + Amount
+        billData += "Qty : " + item.qty;
+        billData += "           Amt : " + item.total + "\n";
 
-billData += "--------------------------------\n";
-billData += "TOTAL : " + grandTotal + "\n";
-billData += "--------------------------------\n";
+        billData += "--------------------------------\n";
+
+    });
+
+    billData += "TOTAL : " + grandTotal + "\n";
+    billData += "--------------------------------\n";
+
     Android.printBill(billData);
 }
 // Barcode Scanner (USB Wireless Keyboard Mode)
