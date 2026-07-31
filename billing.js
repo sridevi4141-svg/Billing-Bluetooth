@@ -364,21 +364,23 @@ function bluetoothPrint() {
     billData += "--------------------------------\n";
 
     bill.forEach(item => {
+
         let name = item.name;
 
-if (name.length > 14)
-    name = name.substring(0, 14);
+        if (name.length > 16)
+            name = name.substring(0,16);
 
-
-        billData += padRight(item.name,14)
-                 + padLeft(item.qty,3)
-                 + padLeft(item.total,6)
+        billData += padRight(name,16)
+                 + padLeft(item.qty,4)
+                 + padLeft(item.total,10)
                  + "\n";
     });
 
-    billData += "------------------------------\n";
-billData += "TOTAL : " + grandTotal + "\n";
-billData += "------------------------------\n";
+    billData += "--------------------------------\n";
+    billData += padRight("TOTAL :",20)
+             + padLeft(grandTotal,10)
+             + "\n";
+    billData += "--------------------------------\n";
 
     Android.printBill(billData);
 }
