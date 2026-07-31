@@ -347,6 +347,17 @@ function padLeft(text, length) {
     text = text.toString();
     return " ".repeat(Math.max(0, length - text.length)) + text;
 }
+function centerText(text, width) {
+    text = text.toString();
+
+    if (text.length >= width)
+        return text.substring(0, width);
+
+    let left = Math.floor((width - text.length) / 2);
+    let right = width - text.length - left;
+
+    return " ".repeat(left) + text + " ".repeat(right);
+}
 
 function bluetoothPrint() {
 
@@ -356,32 +367,22 @@ function bluetoothPrint() {
     billData += "Date : " + new Date().toLocaleString() + "\n";
     billData += "--------------------------------\n";
 
-    billData += padRight("Item",16)
-             + padLeft("Qty",4)
-             + padLeft("Amt",10)
+bill.forEach(item => {
+
+    let name = item.name;
+
+    if (name.length > 16)
+        name = name.substring(0,16);
+
+    billData += centerText(name,16)
+             + padLeft(item.qty,4)
+             + padLeft(item.total,10)
              + "\n";
+});
 
-    billData += "--------------------------------\n";
-
-    bill.forEach(item => {
-
-        let name = item.name;
-
-        if (name.length > 16)
-            name = name.substring(0,16);
-
-        billData += padRight(name,16)
-                 + padLeft(item.qty,4)
-                 + padLeft(item.total,10)
-                 + "\n";
-    });
-
-    billData += "--------------------------------\n";
-    billData += padRight("TOTAL :",20)
-             + padLeft(grandTotal,10)
-             + "\n";
-    billData += "--------------------------------\n";
-
+billData += "--------------------------------\n";
+billData += "TOTAL : " + grandTotal + "\n";
+billData += "--------------------------------\n";
     Android.printBill(billData);
 }
 // Barcode Scanner (USB Wireless Keyboard Mode)
