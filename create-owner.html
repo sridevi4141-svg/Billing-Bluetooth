@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Create Owner</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+
+    background:#f5f5f5;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.form-box{
+
+    width:380px;
+    background:#fff;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+
+h2{
+
+    text-align:center;
+    margin-bottom:20px;
+    color:#2E7D32;
+}
+
+input{
+
+    width:100%;
+    padding:12px;
+    margin-top:12px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    font-size:15px;
+}
+
+button{
+
+    width:100%;
+    padding:12px;
+    margin-top:20px;
+    border:none;
+    border-radius:5px;
+    background:#2E7D32;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+
+    background:#1B5E20;
+}
+
+.login-link{
+
+    text-align:center;
+    margin-top:20px;
+}
+
+.login-link a{
+
+    text-decoration:none;
+    color:#1565C0;
+    font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="form-box">
+
+<h2>Create Owner</h2>
+
+
+<input
+type="text"
+id="ownerName"
+placeholder="Owner Name">
+
+<input
+type="tel"
+id="mobile"
+placeholder="Mobile Number">
+
+<input
+type="text"
+id="email"
+placeholder="Email">
+
+
+<input
+type="text"
+id="username"
+placeholder="Username">
+
+<input
+type="password"
+id="password"
+placeholder="Password">
+
+<input
+type="password"
+id="confirmPassword"
+placeholder="Confirm Password">
+
+<button id="btnCreate">
+    Create Account
+</button>
+
+<div class="login-link">
+
+Already have an account?
+
+<a href="login.html">
+
+Login
+
+</a>
+
+</div>
+
+</div>
+
+<script type="module" src="create-owner.js"></script>
+
+</body>
+
+</html>
