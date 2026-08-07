@@ -75,24 +75,23 @@ table.innerHTML += `
 
 <td>
 
-<div class="qty-box">
+<td>
+    <div class="qty-box">
 
-<button onclick="decreaseProduct(${index})">
--
-</button>
+        <button class="qty-btn"
+            onclick="decreaseProduct(${index})">-</button>
 
+        <input
+            type="number"
+            min="0"
+            value="${qty}"
+            oninput="delayQtyUpdate(${index}, this.value)">
 
-<span id="qty-${index}">
-${qty}
-</span>
+        <button class="qty-btn"
+            onclick="increaseProduct(${index})">+</button>
 
-
-<button onclick="increaseProduct(${index})">
-+
-</button>
-
-</div>
-
+    </div>
+</td>
 </td>
 
 </tr>
@@ -102,6 +101,42 @@ ${qty}
 });
 }
 
+window.changeQty = function(index, qty){
+
+    qty = parseInt(qty);
+
+    if(isNaN(qty) || qty <= 0){
+        removeOneQty(index);
+        return;
+    }
+
+    let product = products[index];
+
+    let item = bill.find(x => x.id === product.id);
+
+    if(item){
+
+        item.qty = qty;
+        item.total = qty * item.salesPrice;
+
+    }else{
+
+        bill.push({
+
+            id: product.id,
+            name: product.name,
+            salesPrice: Number(product.salesPrice),
+            qty: qty,
+            total: qty * Number(product.salesPrice)
+
+        });
+
+    }
+
+    
+displayBill();
+
+}
 
 // Add To Bill
 window.addToBill = function(index){
@@ -143,80 +178,57 @@ window.addToBill = function(index){
 
 window.increaseProduct = function(index){
 
-    console.log("Clicked +", index);
-    console.log("Before bill:", bill);
-
     let product = products[index];
 
-
     let found = bill.find(item => item.id === product.id);
-
 
     if(found){
 
         found.qty++;
-
         found.total = found.qty * found.salesPrice;
-
 
     }else{
 
-
         bill.push({
-
             id: product.id,
             name: product.name,
-           
             salesPrice: Number(product.salesPrice),
             qty: 1,
             total: Number(product.salesPrice)
-
         });
-
 
     }
 
-
-    displayProducts();
     displayBill();
+    displayProducts();
 
 }
-
 
 window.decreaseProduct = function(index){
 
-    let product = products[index];
+    let productId = products[index].id;
 
+    let item = bill.find(x => x.id === productId);
 
-    let billIndex = bill.findIndex(
-        item => item.id === product.id
-    );
+    if(!item) return;
 
+    if(item.qty > 1){
 
-    if(billIndex === -1)
-        return;
-
-
-    if(bill[billIndex].qty > 1){
-
-        bill[billIndex].qty--;
-
-        bill[billIndex].total =
-        bill[billIndex].qty * bill[billIndex].salesPrice;
-
+        item.qty--;
+        item.total = item.qty * item.salesPrice;
 
     }else{
 
-        bill.splice(billIndex,1);
+        bill = bill.filter(x => x.id !== productId);
 
     }
 
+    console.log("Qty After Decrease:", item ? item.qty : 0);
 
-    displayProducts();
     displayBill();
-
+    displayProducts();
 }
-// Display Bill
+
 function displayBill() {
 
     let table = document.getElementById("billTable");
@@ -533,83 +545,16 @@ if(barcodeInput){
     });
 
 }
-function increaseProduct(index){
+let qtyTimer;
 
-    addToBill(index);
-    
+window.delayQtyUpdate = function(index, qty){
 
-}
-function decreaseProduct(index){
+    clearTimeout(qtyTimer);
 
-    removeOneQty(index);
-    
+    qtyTimer = setTimeout(function(){
 
-}
-function removeOneQty(index){
+        changeQty(index, qty);
 
-    let productId = products[index].id;
-
-    let billIndex = bill.findIndex(item => item.id === productId);
-
-    if(billIndex === -1)
-        return;
-
-    if(bill[billIndex].qty > 1){
-
-        bill[billIndex].qty--;
-
-        bill[billIndex].total =
-            bill[billIndex].qty * bill[billIndex].salesPrice;
-
-    }else{
-
-        bill.splice(billIndex,1);
-
-    }
-
-    renderBill();
-
-}
-
-window.increaseProduct = function(index){
-    addToBill(index);
-    displayBill();
-displayProducts();
-}
-
-window.decreaseProduct = function(index){
-    removeOneQty(index);
-    displayBill();
-displayProducts();
-}
-
-window.removeOneQty = function(index){
-
-let productId = products[index].id;
-
-let billIndex = bill.findIndex(
-item => item.id === productId
-);
-
-
-if(billIndex === -1) return;
-
-
-if(bill[billIndex].qty > 1){
-
-    bill[billIndex].qty--;
-
-    bill[billIndex].total =
-    bill[billIndex].qty * bill[billIndex].salesPrice;
-
-}else{
-
-    bill.splice(billIndex,1);
-
-}
-
-
-displayBill();
-displayProducts();
+    }, 500);
 
 }
