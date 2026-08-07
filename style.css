@@ -458,6 +458,29 @@ button{
 
 }
 
+.qty-box input{
+
+    width:50px;
+    height:32px;
+    text-align:center;
+    border:1px solid #ccc;
+    border-radius:4px;
+    font-size:15px;
+
+}
+
+/* Chrome, Edge */
+.qty-box input::-webkit-outer-spin-button,
+.qty-box input::-webkit-inner-spin-button{
+    -webkit-appearance:none;
+    margin:0;
+}
+
+/* Firefox */
+.qty-box input[type=number]{
+    -moz-appearance:textfield;
+}
+
 .qty-box button:active {
 
     transform: scale(0.85);
